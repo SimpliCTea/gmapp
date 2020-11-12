@@ -1,15 +1,14 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <dungeon-info></dungeon-info>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import DungeonInfo from "./components/DungeonInfo.vue";
 
 export default {
   name: "App",
   components: {
-    HelloWorld
+    DungeonInfo
   }
 };
 </script>
