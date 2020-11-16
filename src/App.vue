@@ -3,11 +3,14 @@
     <button type="button" class="btn btn-primary" @click="createDungeon()">
       Generate Dungeon
     </button>
-    <button type="button" class="btn btn-primary" @click="logWeightedRoll()">
-      Roll Weighted Dice
+    <button type="button" class="btn btn-secondary" @click="copyDungeon()">
+      Copy Dungeon
+    </button>
+    <button type="button" class="btn btn-secondary" @click="displayDungeon()">
+      Display Dungeon
     </button>
   </div>
-  <dungeon-info></dungeon-info>
+  <dungeon-info v-if="generatedDungeon !== null" :dungeon="generatedDungeon"></dungeon-info>
 </template>
 
 <script>
@@ -17,7 +20,8 @@ export default {
   name: "App",
   data() {
     return {
-      dungeons: []
+      dungeons: [],
+      generatedDungeon: null
     };
   },
   components: {
@@ -128,7 +132,7 @@ export default {
         4: "Story Room or Corridor",
         5: "Unfinished Room"
       };
-      const roomWeights = [0.15, 0.25, 0.15, 0.35, 0.1];
+      const roomWeights = [0.15, 0.3, 0.1, 0.35, 0.1];
       const roomID = this.rollWeightedDice(roomWeights);
       return roomTypes[roomID];
     },
@@ -275,64 +279,90 @@ export default {
     },
     computeTreasuryValue(treasuryType) {
       switch (treasuryType) {
-        case 'Insignificant': {
+        case "Insignificant": {
           return {
-            'art': 800 + this.d4() * 100,
-            'gems': this.d10() * 10
+            art: 800 + this.d4() * 100,
+            gems: this.d10() * 10
           };
         }
-        case 'Normal': {
+        case "Normal": {
           return {
-            'art': 2500 + 2 * this.d4() * 100,
-            'gems': 800 + this.d4() * 100,
-            'items': this.d100() <= 10 ? 'Random permanent magic item' : 'No items'
+            art: 2500 + 2 * this.d4() * 100,
+            gems: 800 + this.d4() * 100,
+            items:
+              this.d100() <= 10 ? "Random permanent magic item" : "No items"
           };
         }
-        case 'Rich': {
+        case "Rich": {
           return {
-            'art': 4000 + 4 * this.d4() * 100,
-            'gems': 1500 + 3 * this.d4() * 100,
-            'items': this.d100() <= 25 ? 'Random permanent magic item' : 'No items'
+            art: 4000 + 4 * this.d4() * 100,
+            gems: 1500 + 3 * this.d4() * 100,
+            items:
+              this.d100() <= 25 ? "Random permanent magic item" : "No items"
           };
         }
-        case 'Oppulent': {
+        case "Oppulent": {
           return {
-            'art': 10000 + 8 * this.d4() * 100,
-            'gems': 4000 + 4 * this.d4() * 100,
-            'items': this.d100() <= 50 ? '2 random permanent magic items' : 'Random permanent magic item'
+            art: 10000 + 8 * this.d4() * 100,
+            gems: 4000 + 4 * this.d4() * 100,
+            items:
+              this.d100() <= 50
+                ? "2 random permanent magic items"
+                : "Random permanent magic item"
           };
         }
       }
     },
-    computeCoins(numCoins, coinTypes = ['pp','gp','ep','sp','cp'], coins = '') {
+    computeCoins(
+      numCoins,
+      coinTypes = ["pp", "gp", "ep", "sp", "cp"],
+      coins = ""
+    ) {
       if (numCoins === 0 || coinTypes.length === 0) return coins.trim();
-      const amount = coinTypes.length === 1 ? numCoins : this.rollDice(numCoins);
-      const coinType = coinTypes.splice(this.rollDice(coinTypes.length)-1, 1);
-      return this.computeCoins(numCoins - amount, coinTypes, coins + amount + coinType + ' ')
+      const amount =
+        coinTypes.length === 1 ? numCoins : this.rollDice(numCoins);
+      const coinType = coinTypes.splice(this.rollDice(coinTypes.length) - 1, 1);
+      return this.computeCoins(
+        numCoins - amount,
+        coinTypes,
+        coins + amount + coinType + " "
+      );
     },
     fillChest(chestType) {
       switch (chestType) {
-        case 'Minor Chest': {
+        case "Minor Chest": {
           return {
-            'coins': this.computeCoins((2 * this.d4() - 2) * 100),
-            'gems': (2 * this.d4() - 2) * 100,
-            'consumables': this.d100() <= 20 ? 'Random consumable magical item' : 'No consumable item',
-            'items': this.d100() <= 5 ? 'Random permanent magical item' : 'No permanent item'
+            type: chestType,
+            coins: this.computeCoins((2 * this.d4() - 2) * 100),
+            gems: (2 * this.d4() - 2) * 100,
+            consumables:
+              this.d100() <= 20
+                ? "Random consumable magical item"
+                : "No consumable item",
+            items:
+              this.d100() <= 5
+                ? "Random permanent magical item"
+                : "No permanent item"
           };
         }
-        case 'Major Chest': {
+        case "Major Chest": {
           return {
-            'coins': this.computeCoins((4 * this.d4() - 4) * 100),
-            'gems': (4 * this.d4() - 4) * 100,
-            'consumables': this.d100() <= 45 ? 'Random consumable magical item' : 'No consumable item',
-            'items': this.d100() <= 20 ? 'Random permanent magical item' : 'No permanent item'
+            type: chestType,
+            coins: this.computeCoins((4 * this.d4() - 4) * 100),
+            gems: (4 * this.d4() - 4) * 100,
+            consumables:
+              this.d100() <= 45
+                ? "Random consumable magical item"
+                : "No consumable item",
+            items:
+              this.d100() <= 20
+                ? "Random permanent magical item"
+                : "No permanent item"
           };
         }
       }
     },
     populateRoom(roomSize, roomType) {
-      console.log('IN POPULATE LEVELS');
-      console.info('TYPE: ' + roomType + ' || SIZE: ' + roomSize);
       const numObjects = roomSize * this.d4() - (roomSize - 1);
       const getObjects = function(getNewObject, numObjects, objectList = []) {
         if (numObjects === 0) return objectList;
@@ -340,72 +370,84 @@ export default {
         return getObjects(getNewObject, numObjects - 1, objectList);
       };
       switch (roomType) {
-        case 'Trap Room': {
-          console.log('HEEEEELP I AM IN A TRAAAAAAP!!!!!')
+        case "Trap Room": {
           return getObjects(this.getTrapType, numObjects);
         }
-        case 'Grave Room': {
+        case "Grave Room": {
           const tombs = getObjects(this.getTombType, numObjects);
           return tombs.map(type =>
-            type === 'Trap' ? this.getTrapType() : type
+            type === "Trap" ? this.getTrapType() : type
           );
         }
-        case 'Treasure Room': {
-          const treasuryType = this.getTreasuryType();
-          const treasuryContents = this.computeTreasuryValue(treasuryType);
+        case "Treasure Room": {
+          const treasury = {};
+          treasury.type = this.getTreasuryType();
+          treasury.loot = this.computeTreasuryValue(treasury.type);
           const chests = getObjects(this.getChestType, numObjects);
-          treasuryContents['chests'] = chests.map(type => type === 'Trap' ? this.getTrapType() : this.fillChest(type))
-          return treasuryContents;
+          treasury.chests = chests.map(type =>
+            type === "Trap" ? this.getTrapType() : this.fillChest(type)
+          );
+          return treasury;
         }
-        case 'Story Room or Corridor': {
+        case "Story Room or Corridor": {
           return [
-            'This space was used for story-telling. The walls and statues depict everything that was important to the builders in life.'
+            "This space was used for story-telling. The walls and statues depict everything that was important to the builders in life."
           ];
         }
-        case 'Unfinished Room': {
+        case "Unfinished Room": {
           return [
-            'This room was never finished. There may be some tools lying around and some of the walls are blank.'
+            "This room was never finished. There may be some tools lying around and some of the walls are blank."
           ];
         }
         default: {
-          return ['I HAVE NO PROPER ROOM TYPE!']
+          return ["I HAVE NO PROPER ROOM TYPE!"];
         }
       }
     },
-    populateLevels(levels, populatedLevels = []){
+    populateLevels(levels, populatedLevels = []) {
       if (levels.length === 0) return populatedLevels;
-      const getRooms = function(self, roomTypes, roomSizes, rooms = []) {
+      const getRooms = function(self, roomSizes, roomTypes, rooms = []) {
         if (roomTypes.length === 0) return rooms;
-        rooms.push(self.populateRoom(roomTypes[0], roomSizes[0]));
-        return getRooms(self, roomTypes.slice(1), roomSizes.slice(1), rooms)
+        const room = {
+          size: roomSizes[0],
+          type: roomTypes[0],
+          content: self.populateRoom(roomSizes[0], roomTypes[0])
+        };
+        rooms.push(room);
+        return getRooms(self, roomSizes.slice(1), roomTypes.slice(1), rooms);
       };
       populatedLevels.push(getRooms(this, levels[0][0], levels[0][1]));
-      return this.populateLevels(levels.slice(1),populatedLevels);
+      return this.populateLevels(levels.slice(1), populatedLevels);
     },
     zip(list, other) {
-      return list.map((k,i) => [k, other[i]]);
+      return list.map((k, i) => [k, other[i]]);
     },
     createDungeon() {
-      // const dungeon = {};
-      const spacesPerLevel = this.getDungeonSize();
+      const dungeon = {};
+      dungeon.size = this.getDungeonSize();
       const levels = this.getDungeonLevels();
       const roomDistribution = this.distributeRoomSpace(
         levels,
-        spacesPerLevel,
+        dungeon.size,
         4
       );
       const roomTypes = this.determineRoomTypes(roomDistribution.numRooms);
       const roomSizesAndTypes = this.zip(roomDistribution.rooms, roomTypes);
-      const populatedLevels = this.populateLevels(roomSizesAndTypes);
-      console.log('Dungeon Size: ' + spacesPerLevel);
-      console.log('Dungeon Levels: ' + levels);
-      console.log('Dungeon roomsPerLevel:');
-      console.info(roomDistribution);
-      console.log('Dungeon roomTypes:');
-      console.info(roomTypes);
-      console.info(roomSizesAndTypes);
-      console.log('Dungeon populated Levels:');
-      console.info(populatedLevels);
+      dungeon.levels = this.populateLevels(roomSizesAndTypes);
+      dungeon.hasSpecialEncounter = this.d100() <= (30 + dungeon.levels.length * 5);
+      console.dir(dungeon);
+      this.generatedDungeon = dungeon;
+    },
+    copyDungeon() {
+      const el = document.createElement('textarea');
+      el.value = JSON.stringify(this.generatedDungeon);
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    },
+    displayDungeon() {
+      this.generatedDungeon = JSON.parse(prompt('Please enter your dungeon as JSON'));
     }
   }
 };

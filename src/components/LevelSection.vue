@@ -3,7 +3,7 @@
     <room-card
       v-for="room in rooms"
       :key="room.type + Math.random()"
-      :title="room.type"
+      :title="room.type + ' (' + room.size + ')'"
       :room_content="room.content"
     ></room-card>
   </div>

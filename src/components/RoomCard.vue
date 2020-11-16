@@ -1,17 +1,17 @@
 <template>
   <base-card :title="title">
-    <div v-if="title !== 'Treasury Room'">
-      <p v-for="element in room_content" :key="element + Math.random()">
-        {{ element }}
+    <div v-if="title.includes('Treasure Room')">
+      <p>Art: {{ room_content.loot.art }}</p>
+      <p>Gems: {{ room_content.loot.gems }}</p>
+      <p>Coins: {{ room_content.loot.coins }}</p>
+      <p>Items: {{ room_content.loot.items }}</p>
+      <p v-for="(chest, num) in room_content.chests" :key="chest">
+        Chest {{ num + 1 }}: {{ chest }}
       </p>
     </div>
     <div v-else>
-      <p>Art: {{ room_content.art }}</p>
-      <p>Gems: {{ room_content.gems }}</p>
-      <p>Coins: {{ room_content.coins }}</p>
-      <p v-for="item in room_content.items" :key="item">Items: {{ item }}</p>
-      <p v-for="(chest, num) in room_content.chests" :key="chest">
-        Chest {{ num + 1 }}: {{ chest }}
+      <p v-for="element in room_content" :key="element + Math.random()">
+        {{ element }}
       </p>
     </div>
   </base-card>

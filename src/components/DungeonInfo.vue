@@ -1,25 +1,20 @@
 <template>
-  <div id="DungeonInfo" v-if="activeTomb !== null">
+  <div id="DungeonInfo">
     <h1>Dungeon Info</h1>
-    <p>Size: {{ activeTomb.size }}</p>
-    <p>Levels: {{ activeTomb.levels.length }}</p>
+    <p v-if="dungeon.hasSpecialEncounter">Careful! This dungeon features a special encounter.</p>
+    <p v-else>No special encounters here...</p>
     <ul class="nav nav-tabs">
       <li
         class="nav-item"
-        v-for="level of activeTomb.levels"
-        :key="level.location"
+        v-for="(level, id) in dungeon.levels"
+        :key="id"
       >
-        <a class="nav-link" href="#" @click="setActiveLevel(level.location)"
-          >Level: {{ level.location }}</a
+        <a class="nav-link" href="#" @click="setActiveLevel(id)"
+          >Level: {{ id }}</a
         >
       </li>
     </ul>
-    <level-section :rooms="getActiveLevelData().rooms"></level-section>
-    <!-- <component :is="activeLevel"></component> -->
-    <!-- <div v-for="level of levels" :key="level.location">
-            <h2>Level #{{level.location}}</h2>
-            <room-card v-for="room in level.rooms" :key="room.type + Math.random()" :title="room.type" :room_data="room"></room-card>
-        </div> -->
+    <level-section :rooms="getActiveLevelData()"></level-section>
   </div>
 </template>
 
@@ -31,6 +26,7 @@ export default {
   components: {
     LevelSection
   },
+  props: ['dungeon'],
   data() {
     return {
       activeLevel: 0,
@@ -170,9 +166,7 @@ export default {
       this.activeLevel = lvl;
     },
     getActiveLevelData() {
-      return this.activeTomb.levels.filter(
-        x => x.location == this.activeLevel
-      )[0];
+      return this.dungeon.levels[this.activeLevel];
     },
     setActiveTomb() {
       this.activeTomb = this.tombs[0];
