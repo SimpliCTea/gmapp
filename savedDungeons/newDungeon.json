@@ -1,0 +1,129 @@
+{
+    "size": 4,
+    "levels": [
+        [{
+            "size": 2,
+            "type": "Story Room or Corridor",
+            "content": ["This space was used for story-telling. The walls and statues depict everything that was important to the builders in life."]
+        }, {
+            "size": 1,
+            "type": "Trap Room",
+            "content": [{
+                "type": "Hold Creature",
+                "detectionDC": 25,
+                "saveType": "Wisdom",
+                "saveDC": 15,
+                "effect": "incapacitated for 1d4h",
+                "saveEffect": "no effect"
+            }]
+        }, {
+            "size": 1,
+            "type": "Treasure Room",
+            "content": {
+                "type": "Rich",
+                "loot": {
+                    "art": 5200,
+                    "gems": 2100,
+                    "items": "No items"
+                },
+                "chests": [{
+                    "type": "Major Chest",
+                    "coins": "46pp 278sp 52cp 24gp",
+                    "gems": 1200,
+                    "consumables": "Random consumable magical item",
+                    "items": "Random permanent magical item"
+                }]
+            }
+        }],
+        [{
+            "size": 2,
+            "type": "Story Room or Corridor",
+            "content": ["This space was used for story-telling. The walls and statues depict everything that was important to the builders in life."]
+        }, {
+            "size": 2,
+            "type": "Story Room or Corridor",
+            "content": ["This space was used for story-telling. The walls and statues depict everything that was important to the builders in life."]
+        }],
+        [{
+            "size": 4,
+            "type": "Story Room or Corridor",
+            "content": ["This space was used for story-telling. The walls and statues depict everything that was important to the builders in life."]
+        }],
+        [{
+            "size": 2,
+            "type": "Treasure Room",
+            "content": {
+                "type": "Rich",
+                "loot": {
+                    "art": 5600,
+                    "gems": 1800,
+                    "items": "No items"
+                },
+                "chests": [{
+                    "type": "Major Chest",
+                    "coins": "",
+                    "gems": 1200,
+                    "consumables": "No consumable item",
+                    "items": "Random permanent magical item"
+                }, {
+                    "type": "Necrotic Burst",
+                    "detectionDC": 20,
+                    "saveType": "Constitution",
+                    "saveDC": 15,
+                    "effect": "7d4 necrotic damage; if killed by this damage turn into zombie",
+                    "saveEffect": "half damage"
+                }, {
+                    "type": "Minor Chest",
+                    "coins": "340pp 37gp 12ep 6cp 5sp",
+                    "gems": 200,
+                    "consumables": "No consumable item",
+                    "items": "No permanent item"
+                }, {
+                    "type": "Nightmare",
+                    "detectionDC": 25,
+                    "saveType": "Intelligence",
+                    "saveDC": 15,
+                    "effect": "2d8 psychic damage; restrained 1 minute",
+                    "saveEffect": "half damage"
+                }, {
+                    "type": "Minor Chest",
+                    "coins": "578gp 22sp",
+                    "gems": 600,
+                    "consumables": "No consumable item",
+                    "items": "No permanent item"
+                }, {
+                    "type": "Minor Chest",
+                    "coins": "",
+                    "gems": 0,
+                    "consumables": "Random consumable magical item",
+                    "items": "No permanent item"
+                }, {
+                    "type": "Minor Chest",
+                    "coins": "",
+                    "gems": 200,
+                    "consumables": "No consumable item",
+                    "items": "No permanent item"
+                }]
+            }
+        }, {
+            "size": 2,
+            "type": "Grave Room",
+            "content": ["Living Mummy", "Dead Mummy (corroded)", {
+                "type": "Necrotic Burst",
+                "detectionDC": 20,
+                "saveType": "Constitution",
+                "saveDC": 15,
+                "effect": "7d4 necrotic damage; if killed by this damage turn into zombie",
+                "saveEffect": "half damage"
+            }, {
+                "type": "Radiant Burst",
+                "detectionDC": 20,
+                "saveType": "CON",
+                "saveDC": 15,
+                "effect": "1d12 radiant damage; blind for 2d4h",
+                "saveEffect": "no blindness"
+            }, "Dead Mummy (corroded)"]
+        }]
+    ],
+    "hasSpecialEncounter": false
+}
