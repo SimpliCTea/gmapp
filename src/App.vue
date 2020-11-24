@@ -9,6 +9,9 @@
     <button type="button" class="btn btn-secondary" @click="displayDungeon()">
       Display Dungeon
     </button>
+    <!-- <button type="button" class="btn btn-secondary" @click="calculateOdds(6,8)">
+      Calculate Odds
+    </button> -->
   </div>
   <dungeon-info v-if="generatedDungeon !== null" :dungeon="generatedDungeon"></dungeon-info>
 </template>
@@ -31,6 +34,17 @@ export default {
     rollDice(die) {
       return 1 + Math.floor(Math.random() * die);
     },
+    createRange(end,start=0,length=end-start+1) {
+      return Array.from({length}, (_, i) => start + i);
+    },
+    // calculateOdds(d1,d2) {
+    //   // const d1_results = this.createRange(d1,1);
+    //   // const d2_results = this.createRange(d2,1);
+    //   // const getCombinations = function (list, other, result=[]) {
+    //   //   if (list.length === 1) return 
+    //   //   return getCombinations([list[0]], other, results)
+    //   // };
+    // },
     d2() {
       return this.rollDice(2);
     },
